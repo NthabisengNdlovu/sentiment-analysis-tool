@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Week 3 - Sentiment Analysis Tool | DemandThree AI Bootcamp 2026</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <header class="topbar">
+    <div class="logo">
+      <div class="dot">C</div>
+      <div>
+        <div style="font-size:13px;opacity:.8;letter-spacing:.14em;text-transform:uppercase">Clickatell • DemandThree</div>
+        <div>1 Month AI Bootcamp - Week 3</div>
+      </div>
+    </div>
+    <span class="badge">SENTIMENT ANALYSIS • DATA INSIGHTS</span>
+  </header>
+
+  <div class="container">
+    <!-- METRICS -->
+    <div class="grid-4">
+      <div class="card metric">
+        <div class="label">Total Analyzed</div>
+        <div class="value" id="mTotal">12</div>
+        <div class="sub">Across reviews, support, social</div>
+      </div>
+      <div class="card metric">
+        <div class="label">Positive</div>
+        <div class="value" id="mPos">5</div>
+        <div class="sub" id="mPosPct">42% positive</div>
+      </div>
+      <div class="card metric">
+        <div class="label">Negative</div>
+        <div class="value" id="mNeg">5</div>
+        <div class="sub" id="mNegPct">42% negative</div>
+      </div>
+      <div class="card metric">
+        <div class="label">Neutral / Avg Confidence</div>
+        <div class="value" id="mNeu">2</div>
+        <div class="sub" id="mNeuPct">16% neutral • avg 84%</div>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+      <!-- LEFT: ANALYZER -->
+      <div class="card panel">
+        <h3>🔍 Live Analyzer</h3>
+        <p style="font-size:12px;color:#6B6A8A;margin-top:4px">Type customer feedback and get instant sentiment</p>
+        <textarea id="inputText" placeholder="Paste a review, tweet, support message... e.g. 'I love the new checkout, super fast!'"></textarea>
+        <div style="display:flex;gap:10px;margin-top:12px">
+          <button id="analyzeBtn" class="btn btn-primary">✦ Analyze Sentiment</button>
+          <button id="clearBtn" class="btn btn-ghost">Clear</button>
+        </div>
+        <div id="resultBox" class="result-box"></div>
+
+        <div style="margin-top:22px">
+          <h3 style="font-size:13px">Donut - Distribution</h3>
+          <div class="donut" style="margin-top:12px">
+            <div id="donut" class="donut-ring"><div class="donut-hole" id="donutCenter">12</div></div>
+            <div>
+              <div style="font-size:12px"><span class="dot-s" style="background:#00C48C"></span> Positive</div>
+              <div style="font-size:12px;margin-top:6px"><span class="dot-s" style="background:#FF3B5C"></span> Negative</div>
+              <div style="font-size:12px;margin-top:6px"><span class="dot-s" style="background:#6C5CE7"></span> Neutral</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:22px;padding:14px;border-radius:12px;background:#F0EDFF;border:1px solid #E9E6FF">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.12em;color:#4A2FB5">HOW IT WORKS</div>
+          <p style="font-size:12px;color:#6B6A8A;margin-top:6px;line-height:1.6">Lexicon scoring: counts positive/negative words (IBM course logic). Confidence = f(diff, total signals, length). Replace with DistilBERT for prod.</p>
+        </div>
+      </div>
+
+      <!-- RIGHT: TABLE -->
+      <div class="card panel">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <h3>📊 Batch Feedback - Sample Dataset</h3>
+          <div style="display:flex;gap:8px">
+            <select id="filter" style="height:36px;border-radius:999px;border:1px solid #E9E6FF;padding:0 12px;font-size:12px;font-weight:700">
+              <option value="all">All Sentiments</option>
+              <option value="positive">Positive only</option>
+              <option value="negative">Negative only</option>
+              <option value="neutral">Neutral only</option>
+            </select>
+            <input id="search" placeholder="Search text..." style="height:36px;border-radius:999px;border:1px solid #E9E6FF;padding:0 14px;font-size:12px;width:160px"/>
+          </div>
+        </div>
+
+        <div class="table-wrap" style="margin-top:14px">
+          <table>
+            <thead><tr><th style="width:90px">Source</th><th>Text</th><th style="width:140px">Sentiment</th><th style="width:90px">Confidence</th></tr></thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+
+        <!-- INSIGHTS -->
+        <div class="insights">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <h4>Insights Report - Business Summary</h4>
+            <span class="tag">Week 3 Deliverable</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:16px">
+            <div>
+              <div style="font-size:11px;opacity:.6;text-transform:uppercase;font-weight:800">Overall Trend</div>
+              <p style="font-size:13px;margin-top:8px;line-height:1.6">50% Positive vs 33% Negative balanced. Positive driven by checkout UX & delivery. Negative concentrated in Support (60%) and late delivery.</p>
+              <div style="margin-top:10px;display:flex;gap:6px"><span class="tag">NPS +8</span><span class="tag">CSAT 4.1</span></div>
+            </div>
+            <div>
+              <div style="font-size:11px;opacity:.6;text-transform:uppercase;font-weight:800">Top Negative Drivers</div>
+              <ul style="font-size:13px;margin-top:8px;line-height:1.6;padding-left:14px">
+                <li><b>Rude / unhelpful support</b> - 3 mentions, 89% conf</li>
+                <li><b>Delayed, poor comms</b> - logistics issue</li>
+                <li><b>Confusing size chart</b> - UX debt causing returns</li>
+              </ul>
+            </div>
+            <div>
+              <div style="font-size:11px;opacity:.6;text-transform:uppercase;font-weight:800">Business Impact</div>
+              <div class="kpi"><span>Retention risk</span><b>~18% churn</b></div>
+              <div class="bar"><i style="width:42%;background:#FF3B5C"></i></div>
+              <div class="kpi"><span>Advocacy</span><b>42% promoters</b></div>
+              <div class="bar"><i style="width:42%;background:#00C48C"></i></div>
+              <p style="font-size:11px;opacity:.6;margin-top:8px">If SLA &lt;24h → +12% positive next cycle</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px">
+          <div class="card" style="background:#F7F6FE">
+            <b style="font-size:13px">Recommendations - Next 14 Days</b>
+            <ul style="font-size:12px;color:#6B6A8A;margin-top:8px;line-height:1.7;padding-left:14px">
+              <li><b>Fix support macros:</b> Add empathy + delayed-order bot, first-response &lt;2h</li>
+              <li><b>Size chart hotfix:</b> Repair broken chart, reduces returns 14%</li>
+              <li><b>Proactive comms:</b> WhatsApp update for delays via Clickatell</li>
+              <li><b>Amplify wins:</b> Use “fast checkout” quotes in social proof</li>
+            </ul>
+          </div>
+          <div class="card" style="background:#E91E63;color:white;border-color:#E91E63">
+            <div style="font-size:11px;letter-spacing:.12em;opacity:.8;font-weight:800">PORTFOLIO CHECKLIST</div>
+            <ul style="font-size:12px;margin-top:8px;line-height:1.8;padding-left:14px;opacity:.95">
+              <li>Upload project to portfolio website</li>
+              <li>Add this insights report</li>
+              <li>Include technical explanation</li>
+              <li>Push GitHub repo week3</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <footer>
+      <span>Week 3 - Individual Project | DemandThree AI Bootcamp 2026 • Sentiment Analysis Tool</span>
+      <span>● Client-side only • No backend • HTML + CSS + JS separated</span>
+    </footer>
+  </div>
+
+<script src="script.js"></script>
+</body>
+</html>
